@@ -1,0 +1,6 @@
+.terraform.locak.hcl
+*tfstate*
+cred.json
+*lock*
+# Local .terraform directories
+.terraform/*
