@@ -4,3 +4,7 @@ provider "google" {
   zone        = "us-west4-b"
   region      = "us-west4"
 }
+
+# output "name" {
+#   value = "${google_monitoring_notification_channel.email.*.id}"
+# }

@@ -16,8 +16,8 @@ resource "google_monitoring_alert_policy" "request_count" {
     }
   }
 
-  notification_channels = [google_monitoring_notification_channel.email.name,
-  google_monitoring_notification_channel.basic.name]
+  //notification_channels = [google_monitoring_notification_channel.email.name,
+  //google_monitoring_notification_channel.basic.name]
   /*alert_strategy {
     notification_rate_limit {
       period = "30s"
@@ -40,18 +40,19 @@ resource "google_monitoring_alert_policy" "http_4xx" {
       aggregations {
         alignment_period   = "60s"
         per_series_aligner = "ALIGN_COUNT"
-        //       cross_series_reducer = "REDUCE_SUM"
-        //       group_by_fields      = ["metric.label.response_code_class", "resource.label.revision_name"]
+        // cross_series_reducer = "REDUCE_SUM"
+        // group_by_fields      = ["metric.label.response_code_class", "resource.label.revision_name"]
       }
     }
   }
 
-  notification_channels = [google_monitoring_notification_channel.email.name,
-  google_monitoring_notification_channel.basic.name]
+  //notification_channels = [google_monitoring_notification_channel.email.name,
+  // google_monitoring_notification_channel.basic.name]
 }
 
 resource "google_monitoring_alert_policy" "http_5xx" {
   display_name = "Test alert response_code_class 5XX"
+  enabled      = true
   combiner     = "OR"
   conditions {
     display_name = "Response code class 5XX"
@@ -67,8 +68,12 @@ resource "google_monitoring_alert_policy" "http_5xx" {
       }
     }
   }
-  notification_channels = [google_monitoring_notification_channel.email.name,
-  google_monitoring_notification_channel.basic.name]
+  notification_channels = concat(
+    google_monitoring_notification_channel.email.*.name
+  )
+  //notification_channels = concat(google_monitoring_notification_channel.email.name)
+  // notification_channels = [google_monitoring_notification_channel.email.name,
+  //google_monitoring_notification_channel.basic.name]
 }
 
 resource "google_monitoring_alert_policy" "alert_cpu_utilisitaion" {
@@ -83,8 +88,8 @@ resource "google_monitoring_alert_policy" "alert_cpu_utilisitaion" {
       comparison      = "COMPARISON_GT"
       threshold_value = 0.3
       trigger {
-          count = 1
-        }
+        count = 1
+      }
       aggregations {
         alignment_period   = "60s"
         per_series_aligner = "ALIGN_PERCENTILE_50"
@@ -94,6 +99,10 @@ resource "google_monitoring_alert_policy" "alert_cpu_utilisitaion" {
     }
   }
 
-  notification_channels = [google_monitoring_notification_channel.email.name,
-  google_monitoring_notification_channel.basic.name]
+  notification_channels = concat(
+    google_monitoring_notification_channel.email.*.name
+  )
+
+  //notification_channels = [google_monitoring_notification_channel.email.name,
+  //google_monitoring_notification_channel.basic.name]
 }
